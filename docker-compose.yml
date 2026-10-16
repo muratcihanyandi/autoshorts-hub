@@ -1,0 +1,56 @@
+# AutoShorts Hub - CasaOS / Docker Complant kurulumu.
+#
+# Raspberry Pi 5 uzerinde CasaOS "Install from compose" ile bu dosya kullanilir.
+# Gerekli ortam degiskenleri ayni klasordeki .env dosyasindan okunur.
+#
+# Imaj: ghcr.io/muratcihanyandi/autoshorts-hub (linux/arm64)
+
+name: autoshorts-hub
+
+services:
+  app:
+    image: ghcr.io/muratcihanyandi/autoshorts-hub:latest
+    container_name: autoshorts-hub
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      # PostgreSQL baglantisi (zorunlu).
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL .env dosyasinda tanimli olmali}
+      # Web arayuzu parolasi (bos = parolasiz, yalnizca guvenli yerel agda).
+      APP_PASSWORD: ${APP_PASSWORD:-}
+      # YouTube Data API v3 anahtari (kanal istatistikleri icin).
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY:-}
+      # Video yuklemek icin OAuth istemcisi (Google Cloud Console).
+      YOUTUBE_CLIENT_ID: ${YOUTUBE_CLIENT_ID:-}
+      YOUTUBE_CLIENT_SECRET: ${YOUTUBE_CLIENT_SECRET:-}
+      # Zaman dilimi ve toplama sikliklari.
+      TZ: ${TZ:-Europe/Istanbul}
+      POLL_INTERVAL_MINUTES: ${POLL_INTERVAL_MINUTES:-30}
+      PUBLISH_CHECK_INTERVAL_MINUTES: ${PUBLISH_CHECK_INTERVAL_MINUTES:-5}
+    volumes:
+      # Yuklenen video dosyalari ve calisma verileri.
+      - ${APP_DATA_DIR:-./data}:/data
+    # Pi 5 uzerinde asiri kaynak tüketimini engellemek icin sinir.
+    deploy:
+      resources:
+        limits:
+          memory: 1500M
+    labels:
+      - "org.opencontainers.image.title=AutoShorts Hub"
+      - "org.opencontainers.image.description=YouTube kanal istatistigi ve cok kanalli yayin yonetimi"
+
+    # CasaOS, bu uygulamanin web arayuzunu otomatik taniyabilsin.
+    x-casaos:
+      title: AutoShorts Hub
+      icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/youtube.png
+      description: YouTube kanallarinizi 7/24 izler, cok kanalli yayinlari kural motoruyla yonetir.
+      webui: http://[HOST]:8080
+      ports:
+        - container: "8080"
+          protocol: tcp
+      volumes:
+        - container: /data
+          host:
+            host_path:
+              path: /DATA/AppData/autoshorts-hub

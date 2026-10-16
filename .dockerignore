@@ -1,0 +1,19 @@
+# Imaja girmeyecek gelistirme dosyalari.
+.git
+.github
+.gitignore
+.venv
+venv
+tests
+docs
+data
+local_data
+uploads
+*.db
+*.sqlite3
+.env
+.env.*
+!.env.example
+README.md
+docker-compose.yml
+Dockerfile

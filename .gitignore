@@ -1,0 +1,28 @@
+# Ortam ve gizli degerler
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Calisma verileri
+data/
+local_data/
+uploads/
+*.db
+*.sqlite3
+
+# Editör / sistem
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

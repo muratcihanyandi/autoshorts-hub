@@ -1,0 +1,23 @@
+# AutoShorts Hub - dogrudan bagimliliklar (surumler test edildi ve donduruldu).
+# Tum paketler linux/arm64 (Raspberry Pi 5) wheel destegine sahip; imaj olusturma
+# sirasinda kaynaktan derleme yapilmaz.
+#
+# Gelistirme/test bagimliliklari requirements-dev.txt icindedir.
+
+# Web servisi ve API
+fastapi==0.143.3
+uvicorn[standard]==0.54.0
+python-multipart==0.0.32
+
+# Veritabani (PostgreSQL). SQLAlchemy 2.1, postgresql:// URL'leri icin
+# psycopg3 surucusunu varsayilan olarak kullanir.
+SQLAlchemy==2.1.4
+psycopg[binary]==3.3.6
+
+# 7/24 arka plan gorevleri
+APScheduler==3.11.3
+
+# YouTube Data API v3 + OAuth
+google-api-python-client==2.201.0
+google-auth-oauthlib==1.5.0
+google-auth-httplib2==0.4.4
