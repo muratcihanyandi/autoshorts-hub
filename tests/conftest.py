@@ -18,10 +18,14 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 # App paketi import edilmeden once ortam hazirlanir.
-_DB_FILE = os.path.join(tempfile.mkdtemp(prefix="hub-test-"), "test.db")
+_TMP = tempfile.mkdtemp(prefix="hub-test-")
+_DB_FILE = os.path.join(_TMP, "test.db")
 os.environ["DATABASE_URL"] = "sqlite:///" + _DB_FILE.replace("\\", "/")
 os.environ["SCHEDULER_ENABLED"] = "0"
 os.environ["TZ"] = "Europe/Istanbul"
+# Varsayilan /data klasoru GitHub koşucusunda yazilabilir degil; testler
+# ortamdan bagimsiz olmali.
+os.environ.setdefault("DATA_DIR", os.path.join(_TMP, "data"))
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402

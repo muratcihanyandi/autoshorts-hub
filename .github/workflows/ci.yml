@@ -30,4 +30,5 @@ jobs:
         env:
           DATABASE_URL: sqlite:///./ci-test.db
           SCHEDULER_ENABLED: "0"
+          DATA_DIR: ./ci-data
         run: pytest tests/ -q
